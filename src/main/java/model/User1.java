@@ -1,40 +1,46 @@
 package model;
 
 
-import org.hibernate.annotations.*;
-
-
 import javax.persistence.*;
-import javax.persistence.Entity;
-
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity     //adnotacja tworząca tablekę user w DB
-public class User {
+public class User1 {
   @Id //adnotacja determinująca PrimaryKey
   @GeneratedValue(strategy = GenerationType.AUTO) //determinująca AutoIncrement
   private int id_u;
-  @Column(unique=true)
+  @Column(unique = true)
   private String email;
   private String password;
-  @Enumerated
+
+  //CascadeType.All np. usuwanie kaskadowe (np. z relacjami
+  //FetchType.Eager przy tworzeniu encji mamy dostęp do powiązań
+  //FetchType.Lazy przy utworzeniu encji musimy ręcznie wywołać powiązania
+
+  @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+  Set<Role1> roles=new HashSet<>(); //użytkownik może mieć wiele ról
+  //??role
   private RoleEnum role;
   private boolean enable;
   private LocalDate date_added;
   @Transient // adnotacja wyłaczająca pole ptzy mapowaniu
   private String secrete_code;
+    //relacja 1:n
+  @OneToMany(fetch=FetchType.EAGER,cascade = CascadeType.ALL, mappedBy = "user1")
+  List<Post1> posts=new ArrayList<>();
 
 
-  public User(String email, String password, RoleEnum role, boolean enable, LocalDate date_added, String secrete_code) {
-    this.email = email;
-    this.password = password;
-    this.role = role;
-    this.enable = enable;
-    this.date_added = date_added;
-    this.secrete_code = secrete_code;
+
+  public User1() {
   }
 
-  public User() {
+  public User1(String email, String password) {
+    this.email = email;
+    this.password = password;
   }
 
   public int getId_u() {
@@ -59,6 +65,18 @@ public class User {
 
   public void setPassword(String password) {
     this.password = password;
+  }
+
+  public Set<Role1> getRoles() {
+    return roles;
+  }
+
+  public void setRoles(Set<Role1> roles) {
+    this.roles = roles;
+  }
+
+  public void addRoleToSet(Role1 role1){
+    this.roles.add(role1);
   }
 
   public RoleEnum getRole() {
@@ -93,5 +111,11 @@ public class User {
     this.secrete_code = secrete_code;
   }
 
+  public List<Post1> getPosts() {
+    return posts;
+  }
 
+  public void setPosts(List<Post1> posts) {
+    this.posts = posts;
+  }
 }
