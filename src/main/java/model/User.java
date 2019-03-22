@@ -17,7 +17,8 @@ public class User {
   @Column(unique=true)
   private String email;
   private String password;
-  private String role;
+  @Enumerated
+  private RoleEnum role;
   private boolean enable;
   private LocalDate date_added;
   @Transient // adnotyacja wyłaczająca pole ptzy mapowaniu
@@ -25,66 +26,10 @@ public class User {
 
 
 
-  public User(){
+  public User(String email, String password, RoleEnum role, boolean enable, LocalDate date_added, String secred_code){
 
   }
 
-  public User(String email, String password, String role, boolean enable, LocalDate date_added) {
-    this.email = email;
-    this.password = password;
-    this.role = role;
-    this.enable = enable;
-    this.date_added = date_added;
-  }
-
-
-  public int getId_u() {
-    return id_u;
-  }
-
-  public void setId_u(int id_u) {
-    this.id_u = id_u;
-  }
-
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
-  }
-
-  public String getRole() {
-    return role;
-  }
-
-  public void setRole(String role) {
-    this.role = role;
-  }
-
-  public boolean isEnable() {
-    return enable;
-  }
-
-  public void setEnable(boolean enable) {
-    this.enable = enable;
-  }
-
-  public LocalDate getDate_added() {
-    return date_added;
-  }
-
-  public void setDate_added(LocalDate date_added) {
-    this.date_added = date_added;
-  }
 
 
 }
